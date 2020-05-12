@@ -8,6 +8,9 @@ class RegisterPage extends StatefulWidget{
 }
 
 class RegisterPageState extends State<RegisterPage>{
+  final _formKey = GlobalKey<FormState>();
+
+  String _username, _email, _password, _address;
 
   Widget _showTitle(){
     return Text('Sign Up', style: Theme.of(context).textTheme.headline);
@@ -17,10 +20,13 @@ class RegisterPageState extends State<RegisterPage>{
     return Padding(
                   padding: EdgeInsets.only(top:15.0),
                   child: TextFormField(
+                    onSaved: (val) => _username = val,
+                    //Validation
+                    validator: (val) => val.length < 5 ? 'Username is short' : null,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Username',
-                      hintText: 'Enter Username, min length 6',
+                      hintText: 'Enter Username, min length 5',
                       icon: Icon(Icons.face, color: Colors.black)
                     ),
                   ),);
@@ -30,10 +36,14 @@ class RegisterPageState extends State<RegisterPage>{
     return Padding(
                   padding: EdgeInsets.only(top:15.0),
                   child: TextFormField(
+                    onSaved: (val) => _email = val,
+                    //Validation
+                    validator: (val) => !val.contains('@') ? 'Email is invalid' : null,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Email ID',
                       hintText: 'Enter Email',
+
                       icon: Icon(Icons.email, color: Colors.black)
                     ),
                   ),);
@@ -43,6 +53,9 @@ class RegisterPageState extends State<RegisterPage>{
     return Padding(
                   padding: EdgeInsets.only(top:15.0),
                   child: TextFormField(
+                    onSaved: (val) => _password = val,
+                    //Validation
+                    validator: (val) => val.length < 5 ? 'Password is too short' : null,
                     obscureText: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -67,7 +80,7 @@ class RegisterPageState extends State<RegisterPage>{
                           ),
                           color: Theme.of(context).accentColor,
                           textColor: Colors.grey[50],
-                          onPressed: () => print('submit')
+                          onPressed: _submit
                         ),
 
                     //For login redirects
@@ -84,6 +97,7 @@ class RegisterPageState extends State<RegisterPage>{
     return Padding(
                   padding: EdgeInsets.only(top:15.0),
                   child: TextFormField(
+                    onSaved: (val) => _address = val,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: 'Address',
@@ -97,6 +111,8 @@ class RegisterPageState extends State<RegisterPage>{
     return Padding(
                   padding: EdgeInsets.only(top:15.0),
                   child: TextFormField(
+                    //Validation
+                    validator: (val) => val.length < 10 ? 'Phone number is short' : null,
                     keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
             WhitelistingTextInputFormatter.digitsOnly
@@ -111,6 +127,15 @@ class RegisterPageState extends State<RegisterPage>{
                   ),);
   }
 
+  void _submit(){
+    final form = _formKey.currentState;
+
+    if(form.validate()){
+      form.save();
+      print('Username: $_username, Email: $_email, Password: $_password, Address: $_address');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,6 +147,7 @@ class RegisterPageState extends State<RegisterPage>{
         child: Center(
           child: SingleChildScrollView(
             child: Form(
+              key: _formKey,
               child: Column(
                 children: <Widget>[
                   //Page Title
