@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_online_store/pages/login_page.dart';
+import 'package:flutter_online_store/pages/products_page.dart';
+
 import 'pages/register_page.dart';
 
 void main() => runApp(MyApp());
@@ -10,6 +13,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Online Store',
+      routes: {
+        '/login':(BuildContext context) => LoginPage(),
+        '/register':(BuildContext context) =>RegisterPage(),
+        '/products':(BuildContext context) => ProductsPage()
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //
