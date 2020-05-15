@@ -1,15 +1,16 @@
+import 'package:flutter_online_store/models/product.dart';
+import 'package:flutter_online_store/models/user.dart';
 import 'package:meta/meta.dart';
 
 @immutable
 
 class AppState {
-  final dynamic user;
+  final User user;
+  final List<Product> products;
 
-  AppState({ @required this.user });
+  AppState({ @required this.user, @required this.products});
 
   factory AppState.initial() {
-    return AppState(
-      user: null
-    );
+    return AppState(user: null, products: []);
   }
 }

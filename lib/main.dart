@@ -9,10 +9,11 @@ import 'package:flutter_online_store/pages/register_page.dart';
 
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux_logging/redux_logging.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
 void main() {
-  final store = Store<AppState>(appReducer, initialState: AppState.initial(), middleware: [thunkMiddleware]);
+  final store = Store<AppState>(appReducer, initialState: AppState.initial(), middleware: [thunkMiddleware, LoggingMiddleware.printer()]);
   runApp(MyApp(store: store));
 } 
 
@@ -30,10 +31,12 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login':(BuildContext context) => LoginPage(),
         '/register':(BuildContext context) =>RegisterPage(),
-        '/products':(BuildContext context) => ProductsPage(
+        '/':(BuildContext context) => ProductsPage(
           onInit: (){
             StoreProvider.of<AppState>(context).dispatch(getUserAction);
             //dispatch an action (getUserAction) to grab user data
+            StoreProvider.of<AppState>(context).dispatch(getProductsAction);
+
           }
         )
       },
@@ -56,7 +59,7 @@ class MyApp extends StatelessWidget {
         )
       ),
       //home: MyHomePage(title: 'Flutter'),
-      home: RegisterPage()
+      
     ));
   }
 }
