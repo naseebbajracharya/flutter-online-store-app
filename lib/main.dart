@@ -1,22 +1,41 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_online_store/models/app_state.dart';
+import 'package:flutter_online_store/redux/actions.dart';
+import 'package:flutter_online_store/redux/reducers.dart';
 import 'package:flutter_online_store/pages/login_page.dart';
 import 'package:flutter_online_store/pages/products_page.dart';
+import 'package:flutter_online_store/pages/register_page.dart';
 
-import 'pages/register_page.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  final store = Store<AppState>(appReducer, initialState: AppState.initial(), middleware: [thunkMiddleware]);
+  runApp(MyApp(store: store));
+} 
 
 class MyApp extends StatelessWidget {
+  final Store<AppState> store;
+  MyApp({ this.store });
   // This widget is the root of your application.
+  
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return StoreProvider (
+      store: store,
+      child: MaterialApp(
       title: 'Online Store',
       routes: {
         '/login':(BuildContext context) => LoginPage(),
         '/register':(BuildContext context) =>RegisterPage(),
-        '/products':(BuildContext context) => ProductsPage()
+        '/products':(BuildContext context) => ProductsPage(
+          onInit: (){
+            StoreProvider.of<AppState>(context).dispatch(getUserAction);
+            //dispatch an action (getUserAction) to grab user data
+          }
+        )
       },
       theme: ThemeData(
         // This is the theme of your application.
@@ -38,7 +57,7 @@ class MyApp extends StatelessWidget {
       ),
       //home: MyHomePage(title: 'Flutter'),
       home: RegisterPage()
-    );
+    ));
   }
 }
 
