@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_online_store/models/app_state.dart';
 import 'package:flutter_online_store/models/product.dart';
 import 'package:flutter_online_store/pages/product_detail_page.dart';
+import 'package:flutter_online_store/redux/actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class ProductItem extends StatelessWidget {
@@ -32,9 +33,11 @@ class ProductItem extends StatelessWidget {
           converter:(store) => store.state,
           builder: (_, state){
             return state.user != null ? IconButton(icon: Icon(Icons.add_shopping_cart), 
-            color: Colors.white, onPressed: () => print('pressed')) : Text('');
-          },
-        ),
+            color: Colors.white, onPressed: () {
+              StoreProvider.of<AppState>(context).dispatch(toggleCartProductAction(item));
+            }
+            ) : Text('');
+          }),
       ),
       child: Hero(tag: item, child: Image.network(pictureUrl, fit: BoxFit.cover),
       )));

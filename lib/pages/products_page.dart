@@ -46,7 +46,9 @@ class ProductsPageState extends State<ProductsPage>{
         return AppBar(
           centerTitle: true,
           title: SizedBox(child: state.user != null ? Text(state.user.username) : Text('Online Store Application')),
-          leading: state.user != null ? Icon(Icons.shopping_cart) : Text(''),
+          leading: state.user != null ? IconButton(icon: Icon(Icons.shopping_cart),
+          onPressed: () => Navigator.pushNamed(context, '/cart'),
+          ) : Text(''),
           actions: [
             Padding(padding: EdgeInsets.only(right: 12.0),
             child: StoreConnector<AppState, VoidCallback>(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_online_store/models/app_state.dart';
+import 'package:flutter_online_store/pages/cart_page.dart';
 import 'package:flutter_online_store/redux/actions.dart';
 import 'package:flutter_online_store/redux/reducers.dart';
 import 'package:flutter_online_store/pages/login_page.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
             StoreProvider.of<AppState>(context).dispatch(getProductsAction);
 
           }
-        )
+        ),
+        '/cart':(BuildContext context) => CartPage()
       },
       theme: ThemeData(
         // This is the theme of your application.
