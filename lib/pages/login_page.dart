@@ -70,7 +70,7 @@ class LoginPageState extends State<LoginPage>{
                     padding: EdgeInsets.only(top:15.0),
                     child: Column(
                       children: <Widget>[
-                        _isSubmitting == true ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor)): RaisedButton(
+                        _isSubmitting == true ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.grey[50])): RaisedButton(
                           child: Text('Sign In',
                           style: Theme.of(context).textTheme.body1.copyWith(color:Colors.white)),
                           elevation: 8.0,

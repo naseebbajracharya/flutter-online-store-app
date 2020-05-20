@@ -43,7 +43,7 @@ class ProductDetailPage extends StatelessWidget {
           converter:(store) => store.state,
           builder: (_, state){
             return state.user != null ? IconButton(icon: Icon(Icons.add_shopping_cart), 
-            color: _isInCart(state, item.id) ? Colors.red[400] : Colors.black,
+            color: _isInCart(state, item.id) ? Colors.green[400] : Colors.white,
             onPressed: () {
               StoreProvider.of<AppState>(context).dispatch(toggleCartProductAction(item));
               final snackBar = SnackBar(

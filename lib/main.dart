@@ -37,14 +37,10 @@ class MyApp extends StatelessWidget {
             StoreProvider.of<AppState>(context).dispatch(getUserAction);
             //dispatch an action (getUserAction) to grab user data
             StoreProvider.of<AppState>(context).dispatch(getProductsAction);
-            StoreProvider.of<AppState>(context).dispatch(getCartProductsAction);
-
 
           }
         ),
-        '/cart':(BuildContext context) => CartPage(onInit: (){
-          StoreProvider.of<AppState>(context).dispatch(getCardsAction);
-        })
+        '/cart':(BuildContext context) => CartPage()
       },
       theme: ThemeData(
         // This is the theme of your application.
