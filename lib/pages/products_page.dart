@@ -5,7 +5,7 @@ import 'package:flutter_online_store/models/app_state.dart';
 import 'package:flutter_online_store/redux/actions.dart';
 import 'package:flutter_online_store/widgets/product_item.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
+import 'package:badges/badges.dart';
 
 final gradientBackground = BoxDecoration(
   gradient: LinearGradient(
@@ -46,7 +46,13 @@ class ProductsPageState extends State<ProductsPage>{
         return AppBar(
           centerTitle: true,
           title: SizedBox(child: state.user != null ? Text(state.user.username) : Text('Online Store Application')),
-          leading: state.user != null ? IconButton(icon: Icon(Icons.shopping_cart),
+          leading: state.user != null 
+          ? BadgeIconButton(
+            itemCount: state.cartProducts.length,
+            badgeColor: Colors.redAccent,
+            badgeTextColor: Colors.black,
+            hideZeroCount: false,
+            icon: Icon(Icons.shopping_cart),
           onPressed: () => Navigator.pushNamed(context, '/cart'),
           ) : Text(''),
           actions: [
