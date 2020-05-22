@@ -177,7 +177,7 @@ class RegisterPageState extends State<RegisterPage>{
    final snackbar = SnackBar(
     content: Text(errorMsg, 
     style: TextStyle(color: Colors.red),));
-    _scaffoldKey.currentState.showSnackBar(snackbar); //displaying success msg
+    _scaffoldKey.currentState.showSnackBar(snackbar); //displaying error msg
     throw Exception('Error: $errorMsg');
   }
 

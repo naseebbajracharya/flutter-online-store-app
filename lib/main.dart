@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_online_store/models/app_state.dart';
 import 'package:flutter_online_store/pages/cart_page.dart';
+import 'package:flutter_online_store/pages/profile_page.dart';
 import 'package:flutter_online_store/redux/actions.dart';
 import 'package:flutter_online_store/redux/reducers.dart';
 import 'package:flutter_online_store/pages/login_page.dart';
@@ -31,16 +32,22 @@ class MyApp extends StatelessWidget {
       title: 'Online Store',
       routes: {
         '/login':(BuildContext context) => LoginPage(),
+        '/profile':(BuildContext context) => ProfilePage(),
         '/register':(BuildContext context) =>RegisterPage(),
         '/':(BuildContext context) => ProductsPage(
           onInit: (){
             StoreProvider.of<AppState>(context).dispatch(getUserAction);
             //dispatch an action (getUserAction) to grab user data
             StoreProvider.of<AppState>(context).dispatch(getProductsAction);
+            StoreProvider.of<AppState>(context).dispatch(getCartProductsAction);
+
 
           }
         ),
-        '/cart':(BuildContext context) => CartPage()
+        '/cart':(BuildContext context) => CartPage(onInit: (){
+          StoreProvider.of<AppState>(context).dispatch(getCardsAction);
+        }),
+        
       },
       theme: ThemeData(
         // This is the theme of your application.

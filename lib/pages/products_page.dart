@@ -45,12 +45,12 @@ class ProductsPageState extends State<ProductsPage>{
       builder: (context, state){
         return AppBar(
           centerTitle: true,
-          title: SizedBox(child: state.user != null ? Text(state.user.username) : Text('Online Store Application')),
+          title: SizedBox(child: state.user != null ? Text('User: ${state.user.username}') : Text('Online Store Application')),
           leading: state.user != null 
           ? BadgeIconButton(
             itemCount: state.cartProducts.length,
             badgeColor: Colors.redAccent,
-            badgeTextColor: Colors.black,
+            badgeTextColor: Colors.white,
             hideZeroCount: false,
             icon: Icon(Icons.shopping_cart),
           onPressed: () => Navigator.pushNamed(context, '/cart'),
@@ -78,8 +78,23 @@ class ProductsPageState extends State<ProductsPage>{
   @override
   Widget build(BuildContext context){
     final Orientation orientation = MediaQuery.of(context).orientation;
+    return StoreConnector<AppState, AppState>(
+      converter: (store) => store.state,
+      builder: (_, state){
+    
     return Scaffold(
       appBar: _appBar,
+
+      floatingActionButton: state.user == null ?
+       FloatingActionButton.extended(
+          onPressed: () => Navigator.pushNamed(context, '/login'),
+          icon: Icon(Icons.account_circle),
+          label: Text("Sign In"),
+          backgroundColor: Colors.green,
+        ) : FloatingActionButton(
+          onPressed: () => Navigator.pushNamed(context, '/profile'),
+           child: Icon(Icons.supervised_user_circle)),
+          // backgroundColor: Colors.green),
 
       body: Container(
         decoration: gradientBackground,
@@ -114,14 +129,15 @@ class ProductsPageState extends State<ProductsPage>{
         ),
         
       ),
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: () => Navigator.pushNamed(context, '/login'),
-          icon: Icon(Icons.account_circle),
-          label: Text("Sign In"),
-          backgroundColor: Colors.green,
-        ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //     onPressed: () => Navigator.pushNamed(context, '/login'),
+      //     icon: Icon(Icons.account_circle),
+      //     label: Text("Sign In"),
+      //     backgroundColor: Colors.green,
+      //   ),
         
     );
+    });
   }
   // Widget fab(state) {
   //   if (state.user == null) {
