@@ -37,6 +37,8 @@ class MyApp extends StatelessWidget {
             StoreProvider.of<AppState>(context).dispatch(getUserAction);
             //dispatch an action (getUserAction) to grab user data
             StoreProvider.of<AppState>(context).dispatch(getProductsAction);
+            StoreProvider.of<AppState>(context).dispatch(getCartProductsAction);
+
 
           }
         ),
