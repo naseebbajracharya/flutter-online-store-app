@@ -124,3 +124,11 @@ class ToggleCartProductAction {
 
   ToggleCartProductAction(this._cartProducts);
 }
+
+//Cards Actions
+ThunkAction<AppState> getCardsAction = (Store<AppState> store) async {
+  final String customerId = store.state.user.customerId;
+  http.Response response = await http.get('http://10.0.2.2:1337/card?$customerId');
+  final responseData = json.decode(response.body);
+  print('Card Data: $responseData');
+};

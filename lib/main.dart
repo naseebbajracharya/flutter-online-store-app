@@ -42,7 +42,9 @@ class MyApp extends StatelessWidget {
 
           }
         ),
-        '/cart':(BuildContext context) => CartPage()
+        '/cart':(BuildContext context) => CartPage(onInit: (){
+          StoreProvider.of<AppState>(context).dispatch(getCardsAction);
+        })
       },
       theme: ThemeData(
         // This is the theme of your application.

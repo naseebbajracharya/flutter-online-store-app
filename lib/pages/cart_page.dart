@@ -4,11 +4,18 @@ import 'package:flutter_online_store/widgets/product_item.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class CartPage extends StatefulWidget {
+  final void Function() onInit;
+  CartPage({this.onInit});
+
   @override
   CartPageState createState()=> CartPageState();
 }
 
 class CartPageState extends State<CartPage> {
+  void initState(){
+    super.initState();
+    widget.onInit();
+  }
 
   Widget _cartTab(){
     final Orientation orientation = MediaQuery.of(context).orientation;
