@@ -130,5 +130,12 @@ ThunkAction<AppState> getCardsAction = (Store<AppState> store) async {
   final String customerId = store.state.user.customerId;
   http.Response response = await http.get('http://10.0.2.2:1337/card?$customerId');
   final responseData = json.decode(response.body);
-  print('Card Data: $responseData');
+  // print('Card Data: $responseData');
+  store.dispatch(GetCardsAction(responseData));
 };
+
+class GetCardsAction {
+  List<dynamic> _cards;
+  List<dynamic> get cards => this._cards;
+  GetCardsAction(this._cards);
+}

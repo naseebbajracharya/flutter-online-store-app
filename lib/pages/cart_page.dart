@@ -49,7 +49,34 @@ class CartPageState extends State<CartPage> {
         );
   }
   Widget _cardsTab(){
-    return Text('Cards');
+    return StoreConnector<AppState, AppState>(
+          
+          converter: (store) => store.state,
+          
+          builder: (_, state){
+            return Column(children: <Widget>[
+              Expanded(child: ListView(
+                children: state.cards.map<Widget>((card) => (ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: Colors.redAccent,
+                    child: Icon(
+                      Icons.credit_card,
+                      color: Colors.white,
+                    ),
+                  ),
+                  title: Text("${card['exp_month']}/${card['exp_year']}, ${card['last4']}"),
+                  subtitle: Text(card['brand']),
+                  trailing: FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))
+                    ),
+                    child: Text('Set As Primary', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
+                    onPressed: () => print('pressed'),
+                  )
+                ))).toList(),
+              ))
+            ]);
+          });
   }
   Widget _ordersTab(){
     return Text('Orders');
