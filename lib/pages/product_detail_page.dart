@@ -42,17 +42,25 @@ class ProductDetailPage extends StatelessWidget {
           child: StoreConnector<AppState, AppState>(
           converter:(store) => store.state,
           builder: (_, state){
-            return state.user != null ? IconButton(icon: Icon(Icons.add_shopping_cart), 
-            color: _isInCart(state, item.id) ? Colors.green[400] : Colors.white,
-            onPressed: () {
+            return state.user != null ? Expanded(child: MaterialButton(
+              onPressed: () {
               StoreProvider.of<AppState>(context).dispatch(toggleCartProductAction(item));
               final snackBar = SnackBar(
                 duration: Duration(seconds: 2),
                 content: Text('Your Cart Has Been Updated!'),
               );
               _scaffoldKey.currentState.showSnackBar(snackBar);
-            }
-            ) : Text('');
+            },
+            color: _isInCart(state, item.id) ? Colors.red[400] : Colors.green[700],
+            textColor: Colors.white,
+            elevation: 0.2,
+            child: new Text("Add To Cart"),
+            )): Text(''); 
+            
+            // IconButton(icon: Icon(Icons.add_shopping_cart), 
+            // 
+            
+            //)
           }),),
           Flexible(child: SingleChildScrollView(child: Padding(
             child: Text(item.description),
