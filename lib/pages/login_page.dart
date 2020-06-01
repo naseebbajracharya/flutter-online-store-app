@@ -18,7 +18,16 @@ class LoginPageState extends State<LoginPage>{
   String _email, _password;
 
   Widget _showTitle(){
-    return Text('Sign In', style: Theme.of(context).textTheme.headline);
+    // return Text('Sign In', style: Theme.of(context).textTheme.headline);
+    return Hero(
+      tag: 'hero',
+      child: CircleAvatar(
+      backgroundColor: Colors.transparent,
+      radius: 56.0,
+      child: Image.asset('images/logo.png'),
+      
+    ),
+    );
   } 
 
  
@@ -30,12 +39,14 @@ class LoginPageState extends State<LoginPage>{
                     onSaved: (val) => _email = val,
                     //Validation
                     validator: (val) => !val.contains('@') ? 'Email is invalid' : null,
+                    
                     decoration: InputDecoration(
+                      icon: Icon(Icons.email, color: Colors.black),
                       border: OutlineInputBorder(),
                       labelText: 'Email ID',
                       hintText: 'Enter Email',
 
-                      icon: Icon(Icons.email, color: Colors.black)
+                      //icon: Icon(Icons.email, color: Colors.black)
                     ),
                   ),);
   }
@@ -70,16 +81,26 @@ class LoginPageState extends State<LoginPage>{
                     padding: EdgeInsets.only(top:15.0),
                     child: Column(
                       children: <Widget>[
-                        _isSubmitting == true ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Colors.grey[50])): RaisedButton(
-                          child: Text('Sign In',
-                          style: Theme.of(context).textTheme.body1.copyWith(color:Colors.white)),
-                          elevation: 8.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5.0))
-                          ),
+                        _isSubmitting == true ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor)): Material(
+                          borderRadius: BorderRadius.circular(10.0),
                           color: Colors.green,
-                          textColor: Colors.grey[50],
-                          onPressed: _submit
+                          elevation:0.0,
+                          child: MaterialButton(onPressed: _submit,
+                            minWidth: MediaQuery.of(context).size.width,
+                            child: Text("SIGN IN", textAlign: TextAlign.center, 
+                             style: TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.w500 ),
+                            ),
+                          
+                          ),
+                          // child: Text('Sign In',
+                          // style: Theme.of(context).textTheme.body1.copyWith(color:Colors.white)),
+                          // elevation: 1.0,
+                          // shape: RoundedRectangleBorder(
+                          //   borderRadius: BorderRadius.all(Radius.circular(1.0))
+                          // ),
+                          // color: Colors.green,
+                          // textColor: Colors.grey[50],
+                          // onPressed: _submit
                         ),
 
                     //For login redirects
@@ -88,9 +109,31 @@ class LoginPageState extends State<LoginPage>{
                       onPressed:() => Navigator.pushReplacementNamed(context, '/register')
                     )
                     ],
-                  )
+                  ),
+                  
                   );
+
+                  
   }
+
+  // Widget _showDemoBtn (){
+  //   return Padding(
+  //                   padding: const EdgeInsets.only(top:20.0),
+  //                   child: Material(
+  //                   borderRadius: BorderRadius.circular(10.0),
+  //                   color: Colors.red,
+  //                   elevation: 2.0,
+  //                   child: MaterialButton(onPressed:() => Navigator.pushReplacementNamed(context, '/register'),
+  //                     minWidth: MediaQuery.of(context).size.width,
+  //                     child: Text ("New Here? Create Your Account Now!", textAlign: TextAlign.center,
+  //                     style: TextStyle(color: Colors.white, fontSize: 15)
+                    
+  //                   ),
+                      
+  //                 )
+  //                 )
+  //                 );
+  // }
 
   void _submit(){
     final form = _formKey.currentState;
@@ -181,6 +224,8 @@ class LoginPageState extends State<LoginPage>{
 
                   //Register & Login Redirect Button
                   _showRegisterButton(),
+
+                  // _showDemoBtn()
                   ],
               ),
             ),
