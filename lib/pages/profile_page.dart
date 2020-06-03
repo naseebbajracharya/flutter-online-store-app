@@ -29,6 +29,7 @@ class ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: <Widget>[
                   CircleAvatar(
+                    backgroundColor: Colors.transparent,
               radius: 100,
               backgroundImage: AssetImage("images/user.png"),
             ),
