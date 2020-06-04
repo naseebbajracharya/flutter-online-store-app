@@ -1,7 +1,12 @@
+// import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_online_store/models/app_state.dart';
+// import 'package:flutter_online_store/models/user.dart';
+// import 'package:flutter_online_store/redux/actions.dart';
 import 'package:flutter_online_store/widgets/product_item.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+// import 'package:http/http.dart' as http;
+// import 'package:stripe_payment/stripe_payment.dart';
 
 class CartPage extends StatefulWidget {
   final void Function() onInit;
@@ -12,10 +17,18 @@ class CartPage extends StatefulWidget {
 }
 
 class CartPageState extends State<CartPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   void initState(){
     super.initState();
     widget.onInit();
+    // StripeSource.setPublishableKey("pk_test_ssW7qkq6MMPjFckETacRsa0A00X4K8Wleq");
+    //StripePayment.setOptions('pk_test_ssW7qkq6MMPjFckETacRsa0A00X4K8Wleq');
+    // StripeSource.setPublishableKey("pk_test_ssW7qkq6MMPjFckETacRsa0A00X4K8Wleq");
+    // StripePayment.setSettings(StripeSettings(publishableKey: "pk_test_ssW7qkq6MMPjFckETacRsa0A00X4K8Wleq", merchantIdentifier: "Test", androidProductionEnvironment: false));
+    // StripePayment.setOptions(
+    //    StripeOptions(publishableKey: "pk_test_ssW7qkq6MMPjFckETacRsa0A00X4K8Wleq", merchantId: "Test", androidPayMode: 'test'));
   }
+ 
 
   Widget _cartTab(){
     final Orientation orientation = MediaQuery.of(context).orientation;
@@ -54,9 +67,44 @@ class CartPageState extends State<CartPage> {
           converter: (store) => store.state,
           
           builder: (_, state){
+            // _addCard(cardToken) async {
+            //   final User user = state.user;
+            //   //update current user's data to include card token
+            //   await http.put('http://10.0.2.2:1337/users/${user.id}', body: {
+            //     "card_token": cardToken
+            //   },
+            //   headers: {
+            //     "Authorization": "Bearer ${user.jwt}"
+            //   });
+
+            //   http.Response response = await http.post('http://10.0.2.2:1337/card/add', body: {
+            //     "source": cardToken, 
+            //     "customer": user.customerId
+            //   });
+
+            //   final responseData = json.decode(response.body);
+            //   return responseData;
+            // }
             return Column(children: <Widget>[
+              Padding(padding: EdgeInsets.only(top: 5.0)),
+              RaisedButton(
+                elevation: 8.0,
+                child: Text('Add Payment Card Details'),
+                onPressed: () async {
+                  // final String cardToken = await StripeSource.addSource();
+                  // final card = await _addCard(cardToken);
+                  // //action to add card to display
+                  // StoreProvider.of<AppState>(context).dispatch(AddCardAction(card));
+                  // //action to update card token
+                  // StoreProvider.of<AppState>(context).dispatch(UpdateCardTokenAction(card['id']));
+                  //snackbar
+                  final snackbar = SnackBar(
+                    content: Text('Your Payment Card Has Been Added!', style: TextStyle(color: Colors.green))
+                    );
+                    _scaffoldKey.currentState.showSnackBar(snackbar);
+                }),
               Expanded(child: ListView(
-                children: state.cards.map<Widget>((card) => (ListTile(
+                children: state.cards.map<Widget>((c) => (ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Colors.redAccent,
                     child: Icon(
@@ -64,8 +112,8 @@ class CartPageState extends State<CartPage> {
                       color: Colors.white,
                     ),
                   ),
-                  title: Text("${card['exp_month']}/${card['exp_year']}, ${card['last4']}"),
-                  subtitle: Text(card['brand']),
+                  title: Text("${c['card']['exp_month']}/${c['card']['exp_year']}, ${c['card']['last4']}"),
+                  subtitle: Text(c['card']['brand']),
                   trailing: FlatButton(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0))
@@ -87,6 +135,7 @@ class CartPageState extends State<CartPage> {
       length: 3,
       initialIndex: 0,
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text('My Cart'),
           bottom: TabBar(
