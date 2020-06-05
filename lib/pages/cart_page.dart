@@ -1,12 +1,12 @@
-// import 'dart:convert';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_online_store/models/app_state.dart';
-// import 'package:flutter_online_store/models/user.dart';
-// import 'package:flutter_online_store/redux/actions.dart';
+import 'package:flutter_online_store/models/user.dart';
+import 'package:flutter_online_store/redux/actions.dart';
 import 'package:flutter_online_store/widgets/product_item.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-// import 'package:http/http.dart' as http;
-// import 'package:stripe_payment/stripe_payment.dart';
+import 'package:http/http.dart' as http;
+import 'package:stripe_payment/stripe_payment.dart';
 
 class CartPage extends StatefulWidget {
   final void Function() onInit;
@@ -21,12 +21,7 @@ class CartPageState extends State<CartPage> {
   void initState(){
     super.initState();
     widget.onInit();
-    // StripeSource.setPublishableKey("pk_test_ssW7qkq6MMPjFckETacRsa0A00X4K8Wleq");
-    //StripePayment.setOptions('pk_test_ssW7qkq6MMPjFckETacRsa0A00X4K8Wleq');
-    // StripeSource.setPublishableKey("pk_test_ssW7qkq6MMPjFckETacRsa0A00X4K8Wleq");
-    // StripePayment.setSettings(StripeSettings(publishableKey: "pk_test_ssW7qkq6MMPjFckETacRsa0A00X4K8Wleq", merchantIdentifier: "Test", androidProductionEnvironment: false));
-    // StripePayment.setOptions(
-    //    StripeOptions(publishableKey: "pk_test_ssW7qkq6MMPjFckETacRsa0A00X4K8Wleq", merchantId: "Test", androidPayMode: 'test'));
+    StripeSource.setPublishableKey("#API_KEY");
   }
  
 
@@ -67,36 +62,36 @@ class CartPageState extends State<CartPage> {
           converter: (store) => store.state,
           
           builder: (_, state){
-            // _addCard(cardToken) async {
-            //   final User user = state.user;
-            //   //update current user's data to include card token
-            //   await http.put('http://10.0.2.2:1337/users/${user.id}', body: {
-            //     "card_token": cardToken
-            //   },
-            //   headers: {
-            //     "Authorization": "Bearer ${user.jwt}"
-            //   });
+            _addCard(cardToken) async {
+              final User user = state.user;
+              //update current user's data to include card token
+              await http.put('http://10.0.2.2:1337/users/${user.id}', body: {
+                "card_token": cardToken
+              },
+              headers: {
+                "Authorization": "Bearer ${user.jwt}"
+              });
 
-            //   http.Response response = await http.post('http://10.0.2.2:1337/card/add', body: {
-            //     "source": cardToken, 
-            //     "customer": user.customerId
-            //   });
+              http.Response response = await http.post('http://10.0.2.2:1337/card/add', body: {
+                "source": cardToken, 
+                "customer": user.customerId
+              });
 
-            //   final responseData = json.decode(response.body);
-            //   return responseData;
-            // }
+              final responseData = json.decode(response.body);
+              return responseData;
+            }
             return Column(children: <Widget>[
               Padding(padding: EdgeInsets.only(top: 5.0)),
               RaisedButton(
                 elevation: 8.0,
                 child: Text('Add Payment Card Details'),
                 onPressed: () async {
-                  // final String cardToken = await StripeSource.addSource();
-                  // final card = await _addCard(cardToken);
-                  // //action to add card to display
-                  // StoreProvider.of<AppState>(context).dispatch(AddCardAction(card));
-                  // //action to update card token
-                  // StoreProvider.of<AppState>(context).dispatch(UpdateCardTokenAction(card['id']));
+                  final String cardToken = await StripeSource.addSource();
+                  final card = await _addCard(cardToken);
+                  //action to add card to display
+                  StoreProvider.of<AppState>(context).dispatch(AddCardAction(card));
+                  //action to update card token
+                  StoreProvider.of<AppState>(context).dispatch(UpdateCardTokenAction(card['id']));
                   //snackbar
                   final snackbar = SnackBar(
                     content: Text('Your Payment Card Has Been Added!', style: TextStyle(color: Colors.green))
