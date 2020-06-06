@@ -86,16 +86,27 @@ class RegisterPageState extends State<RegisterPage>{
                     padding: EdgeInsets.only(top:15.0),
                     child: Column(
                       children: <Widget>[
-                        _isSubmitting == true ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor)) : RaisedButton(
-                          child: Text('Proceed',
-                          style: Theme.of(context).textTheme.body1.copyWith(color:Colors.white)),
-                          elevation: 8.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5.0))
-                          ),
+                        _isSubmitting == true ? CircularProgressIndicator(valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor)) : Material(
+                          borderRadius: BorderRadius.circular(10.0),
                           color: Theme.of(context).accentColor,
-                          textColor: Colors.grey[50],
-                          onPressed: _submit
+                          elevation:0.0,
+                          child: MaterialButton(onPressed: _submit,
+                            minWidth: MediaQuery.of(context).size.width,
+                            child: Text("Proceed", textAlign: TextAlign.center, 
+                             style: TextStyle(color: Colors.white, fontSize: 19, fontWeight: FontWeight.w500 ),
+                            ),
+                          
+                          ),
+                          // child: Text('Proceed',
+                          // style: Theme.of(context).textTheme.body1.copyWith(color:Colors.white)),
+                          // elevation: 8.0,
+                          // shape: RoundedRectangleBorder(
+                          //   borderRadius: BorderRadius.all(Radius.circular(5.0))
+                          // ),
+                          // color: Theme.of(context).accentColor,
+                          // textColor: Colors.grey[50],
+                          // onPressed: _submit
+
                         ),
 
                     //For login redirects
@@ -177,7 +188,7 @@ class RegisterPageState extends State<RegisterPage>{
    final snackbar = SnackBar(
     content: Text(errorMsg, 
     style: TextStyle(color: Colors.red),));
-    _scaffoldKey.currentState.showSnackBar(snackbar); //displaying success msg
+    _scaffoldKey.currentState.showSnackBar(snackbar); //displaying error msg
     throw Exception('Error: $errorMsg');
   }
 

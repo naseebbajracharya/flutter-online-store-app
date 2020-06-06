@@ -139,3 +139,33 @@ class GetCardsAction {
   List<dynamic> get cards => this._cards;
   GetCardsAction(this._cards);
 }
+
+class AddCardAction {
+  final dynamic _card;
+  dynamic get card => this._card;
+  AddCardAction(this._card);
+}
+
+
+//update card token actions
+ThunkAction<AppState> getCardTokenAction = (Store<AppState> store) async {
+  final String jwt = store.state.user.jwt;
+  http.Response response = await http.get('http://10.0.2.2:1337/users/me', headers : {
+    'Authorization': 'Bearer $jwt'
+  });
+  final responseData = json.decode(response.body);
+  final String cardToken = responseData['card_token'];
+  store.dispatch(GetCardTokenAction(cardToken));
+};
+
+class UpdateCardTokenAction {
+  final String _cardToken;
+  String get cardToken => this._cardToken;
+  UpdateCardTokenAction(this._cardToken);
+}
+
+class GetCardTokenAction {
+  final String _cardToken;
+  String get cardToken => this._cardToken;
+  GetCardTokenAction(this._cardToken);
+}

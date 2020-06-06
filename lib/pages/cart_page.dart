@@ -21,7 +21,7 @@ class CartPageState extends State<CartPage> {
   void initState(){
     super.initState();
     widget.onInit();
-    StripeSource.setPublishableKey("#API_KEY");
+    StripeSource.setPublishableKey("API_KEY");
   }
  
 
@@ -109,12 +109,20 @@ class CartPageState extends State<CartPage> {
                   ),
                   title: Text("${c['card']['exp_month']}/${c['card']['exp_year']}, ${c['card']['last4']}"),
                   subtitle: Text(c['card']['brand']),
-                  trailing: FlatButton(
+                  trailing: state.cardToken == c['id'] ? 
+                  Chip(avatar: CircleAvatar(
+                    backgroundColor: Colors.green,
+                    child: Icon(Icons.check_circle_outline, color: Colors.white)
+                  ),
+                  label: Text("Selected Card"),
+                  ) : FlatButton(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0))
                     ),
                     child: Text('Set As Primary', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
-                    onPressed: () => print('pressed'),
+                    onPressed: () {
+                      StoreProvider.of<AppState>(context).dispatch(UpdateCardTokenAction(c['id']));
+                    },
                   )
                 ))).toList(),
               ))
