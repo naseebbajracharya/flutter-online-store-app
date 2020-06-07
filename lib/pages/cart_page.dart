@@ -25,13 +25,13 @@ class CartPageState extends State<CartPage> {
   }
  
 
-  Widget _cartTab(){
+  Widget _cartTab(state){
     final Orientation orientation = MediaQuery.of(context).orientation;
-    return StoreConnector<AppState, AppState>(
+    // return StoreConnector<AppState, AppState>(
           
-          converter: (store) => store.state,
+    //       converter: (store) => store.state,
           
-          builder: (_, state){
+    //       builder: (_, state){
             return Column(
               children: <Widget>[
                 Expanded(
@@ -53,15 +53,15 @@ class CartPageState extends State<CartPage> {
                 )
               ],
             );
-          }, 
-        );
+        //   }, 
+        // );
   }
-  Widget _cardsTab(){
-    return StoreConnector<AppState, AppState>(
+  Widget _cardsTab(state){
+    // return StoreConnector<AppState, AppState>(
           
-          converter: (store) => store.state,
+    //       converter: (store) => store.state,
           
-          builder: (_, state){
+    //       builder: (_, state){
             _addCard(cardToken) async {
               final User user = state.user;
               //update current user's data to include card token
@@ -127,18 +127,33 @@ class CartPageState extends State<CartPage> {
                 ))).toList(),
               ))
             ]);
-          });
+          // });
   }
-  Widget _ordersTab(){
+  Widget _ordersTab(state){
     return Text('Orders');
   }
 
+  String calculateTotalPrice(cartProducts){
+    double totalPrice = 0.0;
+    cartProducts.forEach((cartProduct){
+      totalPrice += cartProduct.price;
+    });
+    return totalPrice.toStringAsFixed(2);
+  }
+
   Widget build(BuildContext context) {
+    return StoreConnector<AppState, AppState>(
+      converter: (store) => store.state,
+      builder: (_,state) {
+    
     return DefaultTabController(
       length: 3,
       initialIndex: 0,
       child: Scaffold(
         key: _scaffoldKey,
+        floatingActionButton: state.cartProducts.length > 0 ?
+        FloatingActionButton(child: Icon(Icons.attach_money, size: 31.0),
+        onPressed: () => print('Pressed')): Text(''),
         appBar: AppBar(
           title: Text('My Cart'),
           bottom: TabBar(
@@ -153,13 +168,13 @@ class CartPageState extends State<CartPage> {
         ),
         body: TabBarView(
           children: <Widget>[
-            _cartTab(),
-            _cardsTab(),
-            _ordersTab()
+            _cartTab(state),
+            _cardsTab(state),
+            _ordersTab(state)
 
           ],
         ),
       )
-      );
+      ); });
   }
 }
