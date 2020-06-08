@@ -155,7 +155,7 @@ class CartPageState extends State<CartPage> {
         FloatingActionButton(child: Icon(Icons.attach_money, size: 31.0),
         onPressed: () => print('Pressed')): Text(''),
         appBar: AppBar(
-          title: Text('My Cart'),
+          title: Text('Cart: ${state.cartProducts.length} Items | \Rs.${calculateTotalPrice(state.cartProducts)}'),
           bottom: TabBar(
             labelColor: Colors.grey[100],
             unselectedLabelColor: Colors.grey[400],
