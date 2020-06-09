@@ -141,6 +141,57 @@ class CartPageState extends State<CartPage> {
     return totalPrice.toStringAsFixed(2);
   }
 
+  Future _showCheckOutDialog(state) {
+    return showDialog(context: context, builder: (BuildContext context){
+      if(state.cards.length == 0) {
+        return AlertDialog(
+          title: Row(children: [
+            Padding(padding: EdgeInsets.only(right: 5.0),
+            child: Text('Add Payment Card')
+            ),
+            Icon(Icons.credit_card, size:40.0)
+          ]),
+          content: SingleChildScrollView(
+            child: ListBody(children: <Widget>[
+              Text('Please provide your card details before checking out!', style: Theme.of(context).textTheme.bodyText1,)
+            ],)),
+        );
+      }
+      String cartSummary = '';
+      state.cartProducts.forEach((cartProduct) {
+        cartSummary += ". ${cartProduct.name}, \$${cartProduct.price}\n";
+      });
+      final primaryCard = state.cards.singleWhere((card) => card['id'] == state.cardToken)['card'];
+      return AlertDialog(
+        title: Text('Checkout'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: [
+              Text('CART ITEMS (${state.cartProducts.length})\n', style: Theme.of(context).textTheme.bodyText1),
+              Text('$cartSummary', style: Theme.of(context).textTheme.bodyText1),
+              Text('CARD DETAILS\n', style: Theme.of(context).textTheme.bodyText1),
+              Text('Brand: ${primaryCard['brand']}', style: Theme.of(context).textTheme.bodyText1),
+              Text('Card Number: ${primaryCard['last4']}', style: Theme.of(context).textTheme.bodyText1),
+              Text('Expires On: ${primaryCard['exp_month']}/${primaryCard['exp_year']}', style: Theme.of(context).textTheme.bodyText1),
+              Text('TOTAL: \Rs.${calculateTotalPrice(state.cartProducts)}', style: Theme.of(context).textTheme.bodyText1),
+            ]
+          ),
+        ),
+        actions: <Widget>[
+          FlatButton(onPressed: () => Navigator.pop(context, false), color: Colors.red,
+          child: Text('Close', style: TextStyle(color: Colors.white))),
+          RaisedButton(onPressed: () => Navigator.pop(context, true), color: Colors.green,
+          child: Text('Checkout', style: TextStyle(color: Colors.white)))
+        ],
+      );
+    }).then((value) {
+      if (value == true){
+        //someth
+        print('Cart Checkout');
+      }
+    });
+  }
+
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
@@ -153,7 +204,7 @@ class CartPageState extends State<CartPage> {
         key: _scaffoldKey,
         floatingActionButton: state.cartProducts.length > 0 ?
         FloatingActionButton(child: Icon(Icons.attach_money, size: 31.0),
-        onPressed: () => print('Pressed')): Text(''),
+        onPressed: () => _showCheckOutDialog(state)): Text(''),
         appBar: AppBar(
           title: Text('Cart: ${state.cartProducts.length} Items | \Rs.${calculateTotalPrice(state.cartProducts)}'),
           bottom: TabBar(
