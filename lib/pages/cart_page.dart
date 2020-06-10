@@ -7,6 +7,7 @@ import 'package:flutter_online_store/widgets/product_item.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:http/http.dart' as http;
 import 'package:stripe_payment/stripe_payment.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class CartPage extends StatefulWidget {
   final void Function() onInit;
@@ -18,6 +19,7 @@ class CartPage extends StatefulWidget {
 
 class CartPageState extends State<CartPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _isSubmitting = false;
   void initState(){
     super.initState();
     widget.onInit();
@@ -186,8 +188,18 @@ class CartPageState extends State<CartPage> {
       );
     }).then((value) {
       if (value == true){
-        //someth
-        print('Cart Checkout');
+        //load spinner
+        setState(() => _isSubmitting = true);
+
+        //checkout product
+        
+        //creating order instance
+
+        //add order action
+
+        //hiding load spinner
+
+        //success
       }
     });
   }
@@ -197,7 +209,8 @@ class CartPageState extends State<CartPage> {
       converter: (store) => store.state,
       builder: (_,state) {
     
-    return DefaultTabController(
+    return ModalProgressHUD(
+      child: DefaultTabController(
       length: 3,
       initialIndex: 0,
       child: Scaffold(
@@ -225,7 +238,10 @@ class CartPageState extends State<CartPage> {
 
           ],
         ),
-      )
-      ); });
+    )
+    ), inAsyncCall: _isSubmitting,
+      ); 
+      }
+      );
   }
 }
