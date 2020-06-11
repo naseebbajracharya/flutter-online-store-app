@@ -186,13 +186,20 @@ class CartPageState extends State<CartPage> {
           child: Text('Checkout', style: TextStyle(color: Colors.white)))
         ],
       );
-    }).then((value) {
+    }).then((value) async{
+      _checkoutCartProducts() async{
+        //create new order in strapi
+        http.post('http://10.0.2.2:1337/orders', body: {
+          "amount": calculateTotalPrice(state.cartProducts),
+          "products": json.encode(state.cartProducts)
+        });
+      }
       if (value == true){
         //load spinner
         setState(() => _isSubmitting = true);
 
         //checkout product
-        
+        await _checkoutCartProducts();
         //creating order instance
 
         //add order action
