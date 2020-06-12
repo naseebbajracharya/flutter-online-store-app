@@ -8,6 +8,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:http/http.dart' as http;
 import 'package:stripe_payment/stripe_payment.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:flutter_online_store/models/order.dart';
 
 class CartPage extends StatefulWidget {
   final void Function() onInit;
@@ -189,21 +190,27 @@ class CartPageState extends State<CartPage> {
     }).then((value) async{
       _checkoutCartProducts() async{
         //create new order in strapi
-        http.post('http://10.0.2.2:1337/orders', body: {
+        http.Response response = await http.post('http://10.0.2.2:1337/orders', body: {
           "amount": calculateTotalPrice(state.cartProducts),
-          "products": json.encode(state.cartProducts)
+          "products": json.encode(state.cartProducts),
+          "source": state.cardToken,
+          "customer": state.user.customerId
+        }, headers: {
+          'Authorization': 'Bearer ${state.user.jwt}'
         });
+        final responseData = json.decode(response.body);
+        return responseData;
       }
       if (value == true){
         //load spinner
         setState(() => _isSubmitting = true);
 
         //checkout product
-        await _checkoutCartProducts();
+        final newOrderData = await _checkoutCartProducts();
         //creating order instance
-
+        Order newOrder = Order.fromJson(newOrderData);
         //add order action
-
+        
         //hiding load spinner
 
         //success
