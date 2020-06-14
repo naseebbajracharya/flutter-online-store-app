@@ -1,6 +1,7 @@
 import 'package:flutter_online_store/models/app_state.dart';
 import 'package:flutter_online_store/models/product.dart';
 import 'package:flutter_online_store/models/user.dart';
+import 'package:flutter_online_store/models/order.dart';
 import 'package:flutter_online_store/redux/actions.dart';
 
 AppState appReducer(AppState state, dynamic action) {
@@ -9,7 +10,8 @@ AppState appReducer(AppState state, dynamic action) {
     products: productsReducer(state.products, action),
     cartProducts: cartProductsReducer(state.cartProducts, action),
     cards: cardsReducer(state.cards, action),
-    cardToken: cardTokenReducer(state.cardToken, action)
+    cardToken: cardTokenReducer(state.cardToken, action),
+    orders: ordersReducer(state.orders, action)
   );
 }
 
@@ -55,4 +57,8 @@ String cardTokenReducer(String cardToken, dynamic action) {
     return action.cardToken;
   }
   return cardToken;
+}
+
+List<Order> ordersReducer(List<Order> orders, dynamic action){
+  return orders;
 }
