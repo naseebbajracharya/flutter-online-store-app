@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter_online_store/models/app_state.dart';
 import 'package:flutter_online_store/models/user.dart';
+import 'package:flutter_online_store/models/order.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -168,4 +169,13 @@ class GetCardTokenAction {
   final String _cardToken;
   String get cardToken => this._cardToken;
   GetCardTokenAction(this._cardToken);
+}
+
+//order action
+class AddOrderAction {
+  final Order _order;
+
+  Order get order => this._order;
+
+  AddOrderAction(this._order);
 }

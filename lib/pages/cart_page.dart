@@ -210,7 +210,7 @@ class CartPageState extends State<CartPage> {
         //creating order instance
         Order newOrder = Order.fromJson(newOrderData);
         //add order action
-        //StoreProvider.of<AppState>(context).dispatch(AddOrderAction(newOrder));
+        StoreProvider.of<AppState>(context).dispatch(AddOrderAction(newOrder));
         //hiding load spinner
 
         //success
