@@ -133,7 +133,24 @@ class CartPageState extends State<CartPage> {
           // });
   }
   Widget _ordersTab(state){
-    return Text('Orders');
+    return ListView(
+      children: state.orders.length > 0 ? state.orders.map<Widget>((order) => (ListTile(
+        title: Text('\Rs.${order.amount}'),
+        subtitle: Text(order.createdAt),
+        leading: CircleAvatar(backgroundColor: Colors.green,child: Icon(Icons.atm, color: Colors.white)),
+      ))).toList() : [
+        Padding(padding: EdgeInsets.all(30.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Icon(Icons.close, size: 40.0),
+            Text('No Any Purchase Found Yet!')
+          ],
+        ),
+        )
+      ]
+      );
   }
 
   String calculateTotalPrice(cartProducts){
