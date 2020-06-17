@@ -110,6 +110,16 @@ ThunkAction<AppState> getCartProductsAction = (Store<AppState> store) async{
   store.dispatch(GetCartProductsAction(cartProducts));
 };
 
+ThunkAction<AppState> clearCartProductsAction = (Store<AppState> store) async{
+  final User user = store.state.user;
+  await http.put('http://10.0.2.2:1337/carts/${user.cartId}', body: {
+    "products": json.encode([])
+  }, headers: {
+    'Authorization': "Bearer ${user.jwt}"
+  });
+  store.dispatch(ClearCartProductsAction(List(0)));
+};
+
 class GetCartProductsAction{
   final List<Product> _cartProducts;
 
@@ -124,6 +134,14 @@ class ToggleCartProductAction {
   List<Product> get cartProducts => this._cartProducts;
 
   ToggleCartProductAction(this._cartProducts);
+}
+
+class ClearCartProductsAction {
+  final List<Product> _cartProducts;
+
+  List<Product> get cartProducts => this._cartProducts;
+
+  ClearCartProductsAction(this._cartProducts);
 }
 
 //Cards Actions

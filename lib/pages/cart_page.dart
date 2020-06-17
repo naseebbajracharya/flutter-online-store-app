@@ -228,6 +228,8 @@ class CartPageState extends State<CartPage> {
         Order newOrder = Order.fromJson(newOrderData);
         //add order action
         StoreProvider.of<AppState>(context).dispatch(AddOrderAction(newOrder));
+        //clear out cart products
+        StoreProvider.of<AppState>(context).dispatch(clearCartProductsAction);
         //hiding load spinner
 
         //success
