@@ -231,10 +231,30 @@ class CartPageState extends State<CartPage> {
         //clear out cart products
         StoreProvider.of<AppState>(context).dispatch(clearCartProductsAction);
         //hiding load spinner
-
+        setState(() => _isSubmitting = false);
         //success
+        _showSuccessDialog();
       }
     });
+  }
+
+  Future _showSuccessDialog() {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text('Success'),
+          children: [ 
+            Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text('Order Successful \nPlease Check Your Email for Purchase Receipt.\n\n Order Summary are added in your orders tab respectively!',
+              style: Theme.of(context).textTheme.bodyText2)
+            )
+
+          ],
+        );
+      }
+    );
   }
 
   Widget build(BuildContext context) {
