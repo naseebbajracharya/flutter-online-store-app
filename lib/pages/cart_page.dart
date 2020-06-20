@@ -135,17 +135,17 @@ class CartPageState extends State<CartPage> {
   Widget _ordersTab(state){
     return ListView(
       children: state.orders.length > 0 ? state.orders.map<Widget>((order) => (ListTile(
-        title: Text('\Rs.${order.amount}'),
+        title: Text('\$${order.amount}'),
         subtitle: Text(order.createdAt),
         leading: CircleAvatar(backgroundColor: Colors.green,child: Icon(Icons.atm, color: Colors.white)),
       ))).toList() : [
-        Padding(padding: EdgeInsets.all(30.0),
+        Padding(padding: EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.close, size: 40.0),
-            Text('No Any Purchase Found Yet!')
+            Icon(Icons.remove_shopping_cart, size: 110.0, color: Colors.red,),
+            Text('No Any Purchase Found Yet!', style: Theme.of(context).textTheme.bodyText2)
           ],
         ),
         )
@@ -289,12 +289,12 @@ class CartPageState extends State<CartPage> {
             _cardsTab(state),
             _ordersTab(state)
 
-          ],
-        ),
+          ]
+        )
     )
-    ), inAsyncCall: _isSubmitting,
+    ), inAsyncCall: _isSubmitting
       ); 
       }
-      );
+  );
   }
 }
