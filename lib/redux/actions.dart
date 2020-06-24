@@ -173,9 +173,23 @@ ThunkAction<AppState> getCardTokenAction = (Store<AppState> store) async {
     'Authorization': 'Bearer $jwt'
   });
   final responseData = json.decode(response.body);
+  List<Order> orders = [];
+  responseData['orders'].forEach((orderData){
+    final Order order = Order.fromJson(orderData);
+    orders.add(order);
+  });
   final String cardToken = responseData['card_token'];
   store.dispatch(GetCardTokenAction(cardToken));
+  store.dispatch(GetOrdersAction(orders));
 };
+
+class GetOrdersAction {
+  final List<Order> _orders;
+
+  List<Order> get orders => this._orders;
+
+  GetOrdersAction(this._orders);
+}
 
 class UpdateCardTokenAction {
   final String _cardToken;
