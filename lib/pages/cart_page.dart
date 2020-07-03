@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:stripe_payment/stripe_payment.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:flutter_online_store/models/order.dart';
+import 'package:intl/intl.dart';
 
 class CartPage extends StatefulWidget {
   final void Function() onInit;
@@ -24,7 +25,7 @@ class CartPageState extends State<CartPage> {
   void initState(){
     super.initState();
     widget.onInit();
-    StripeSource.setPublishableKey("API_KEY");
+    StripeSource.setPublishableKey("#API_KEY");
   }
  
 
@@ -135,9 +136,9 @@ class CartPageState extends State<CartPage> {
   Widget _ordersTab(state){
     return ListView(
       children: state.orders.length > 0 ? state.orders.map<Widget>((order) => (ListTile(
-        title: Text('\$${order.amount}'),
-        subtitle: Text(order.createdAt),
-        leading: CircleAvatar(backgroundColor: Colors.green,child: Icon(Icons.atm, color: Colors.white)),
+        title: Text('Purchase of \Rs.${order.amount}', style: TextStyle(fontSize: 18)),
+        subtitle: Text(DateFormat('yyyy, MMM dd - hh:mm').format(order.createdAt), style: TextStyle(color: Colors.blueGrey, fontSize: 16 )),
+        leading: CircleAvatar(backgroundColor: Colors.lightGreen,child: Icon(Icons.local_atm, color: Colors.white)),
       ))).toList() : [
         Padding(padding: EdgeInsets.all(20.0),
         child: Column(
@@ -247,7 +248,7 @@ class CartPageState extends State<CartPage> {
           children: [ 
             Padding(
               padding: EdgeInsets.all(20.0),
-              child: Text('Order Successful \nPlease Check Your Email for Purchase Receipt.\n\n Order Summary are added in your orders tab respectively!',
+              child: Text('Order Successful \nPlease Check Your Email for Purchase Receipt.\n\nOrder Summary are added in your orders tab respectively!',
               style: Theme.of(context).textTheme.bodyText2)
             )
 
