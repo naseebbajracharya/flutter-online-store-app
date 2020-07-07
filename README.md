@@ -1,6 +1,6 @@
-# flutter_online_store
+# Online Store Application using Flutter
 
-A new Flutter project.
+## UNDER DEVELOPMENT
 
 ## Getting Started
 
